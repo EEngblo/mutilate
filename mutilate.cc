@@ -6,6 +6,7 @@
 #include <string.h>
 #include <sys/socket.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -477,8 +478,6 @@ int main(int argc, char **argv) {
 
   double peak_qps = 0.0;
 
-  pid_t pid;
-
   if (args.search_given) {
     char *n_ptr = strtok(args.search_arg, ":");
     char *x_ptr = strtok(NULL, ":");
@@ -582,6 +581,7 @@ int main(int argc, char **argv) {
   } else if (args.periodic_latency_save_given) {
     printf("Hello\n");
     for (int i = 0; i < 10; i++){
+      pid_t pid;
       if (!(pid = fork())){ // child
         break;
       }
