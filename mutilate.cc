@@ -579,7 +579,7 @@ int main(int argc, char **argv) {
       printf(" %8d\n", q);
     }    
   } else if (args.periodic_latency_save_given) {
-    for (int i = 0; i < 10; i++){
+    for (int i = 0; i < args.periodic_latency_save_arg - 1; i++){
       pid_t pid;
       if (!(pid = fork())){ // child
         break;
