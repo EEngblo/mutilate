@@ -579,20 +579,27 @@ int main(int argc, char **argv) {
       printf(" %8d\n", q);
     }    
   } else if (args.periodic_latency_save_given) {
-    printf("Hello\n");
     for (int i = 0; i < 10; i++){
       pid_t pid;
       if (!(pid = fork())){ // child
         break;
       }
-      waitpid(pid, NULL, NULL);
+      waitpid(pid, NULL, 0); // parent
     }
     go(servers, options, stats);
   } else {
     go(servers, options, stats);
   }
 
-  if (!args.scan_given && !args.loadonly_given) {
+  if (args.periodic_latency_save_given) {
+    printf("%.3f\n", stats.get_sampler.get_nth(95));
+    FILE *file;
+    if ((file = fopen("lats.bin", "w")) == NULL)
+      DIE("--save: failed to open 'lats.bin': %s", strerror(errno));
+
+    fprintf(file, "%.3f\n", stats.get_sampler.get_nth(95));
+
+  } else if (!args.scan_given && !args.loadonly_given) {
     stats.print_header();
     stats.print_stats("read",   stats.get_sampler);
     stats.print_stats("update", stats.set_sampler);
