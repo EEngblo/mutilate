@@ -577,6 +577,9 @@ int main(int argc, char **argv) {
       printf(" %8.1f", stats.get_qps());
       printf(" %8d\n", q);
     }    
+  } else if (args.periodic_latency_save_given) {
+    printf("Hello\n");
+    go(servers, options, stats);
   } else {
     go(servers, options, stats);
   }
