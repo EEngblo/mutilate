@@ -592,12 +592,11 @@ int main(int argc, char **argv) {
   }
 
   if (args.periodic_latency_save_given) {
-    printf("%.3f\n", stats.get_sampler.get_nth(95));
     FILE *file;
     if ((file = fopen("lats.bin", "w")) == NULL)
       DIE("--save: failed to open 'lats.bin': %s", strerror(errno));
 
-    fprintf(file, "%.3f\n", stats.get_sampler.get_nth(95));
+    fprintf(file, "%f,%f\n", stats.get_sampler.get_nth(95), stats.get_sampler.average());
 
   } else if (!args.scan_given && !args.loadonly_given) {
     stats.print_header();
